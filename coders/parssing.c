@@ -23,9 +23,15 @@ int is_a_valid_number(char* a)
 			printf("check all arguments to be valid\n");
 			return (0);
 		}
+		
 		i++;
 	}
-	return 1;
+	if (atoi(a[i]) < 0)
+	{
+		printf("negative arguments are invalid\n");
+		return (0);
+	}
+	return (1);
 }
 
 
