@@ -9,7 +9,17 @@
 
 int main(int argc, char **argv)
 {
-    parsing_codexion(argc, argv);
+    t_shared_info info;
+    int h = parsing_codexion(argc, argv, &info);
+    printf("number of coders = %i \n", info.number_of_coders);
+    printf("time_to_burnout = %i \n", info.time_to_burnout);
+    printf("time_to_compile = %i \n", info.time_to_compile);
+    printf("time_to_debug = %i \n", info.time_to_debug);
+    printf("time_to_refactor = %i \n", info.time_to_refactor);
+    printf("number_of_compiles_required = %i \n", info.number_of_compiles_required);
+    printf("scheduler = %s \n", info.scheduler);
+
+
     // pthread_t coder1;
     // pthread_mutex_t dongle1;
     // pthread_mutex_t dongle2;

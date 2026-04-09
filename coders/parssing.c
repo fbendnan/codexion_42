@@ -15,11 +15,12 @@ int is_a_valid_number(char* a)
 	while (a[i] == '+' || a[i] == '-')
 		i++;
 	
-	while(*a)
+	while(a[i])
 	{
-		if(a[i] < '0' || a[i] > '9')
+		printf("a[%i] = %i\n", i, a[i]);
+		if(a[i] < '0' && a[i] > '9')
 		{
-			printf("check all arguments to be valid");
+			printf("check all arguments to be valid\n");
 			return (0);
 		}
 		i++;
@@ -27,9 +28,28 @@ int is_a_valid_number(char* a)
 	return 1;
 }
 
-t_shared_info	parsing_codexion(int argc, char **argv)
+
+int is_a_valid_shedular(char *shedular[])
 {
-	t_shared_info 	program_info;
+	int i = 0;
+	char *shedulars[2] = {"EDF", "FIFO"};
+	while (shedular[0][i])
+	{
+		if ((shedular[0][i] <= 'A' && shedular[0][i] >= 'Z') 
+			&& (shedular[0][i] <= 'a' && shedular[0][i] >= 'z'))
+			return (0);
+		if (shedular[0][i]<= 'a' && shedular[0][i] >= 'z')
+			shedular[0][i] += 32;
+		i++;
+	}
+	printf("strcmp(shedulars[0], *shedular) = %i\n", strcmp("GHJ", *shedular));
+	printf("strcmp(shedulars[1], *shedular) = %i\n", strcmp(shedulars[1], *shedular));
+	
+	return (0);
+}
+
+int	parsing_codexion(int argc, char **argv, t_shared_info *program_info)
+{
 	int				i;
 
 	i = 1;
@@ -40,29 +60,32 @@ t_shared_info	parsing_codexion(int argc, char **argv)
 			"dongle_cooldown scheduler");
 	else
 	{
-		while (i < 9)
+		while (i < 8)
 		{
 			if(!is_a_valid_number(argv[i]))
-				return;
+				return(0);
 			i++;
 		}
-
-		program_info.number_of_coders = atoi(argv[1]);
-		program_info.time_to_burnout = atoi(argv[2]);
-		program_info.time_to_compile = atoi(argv[3]);
-		program_info.time_to_debug = atoi(argv[4]);
-		program_info.time_to_refactor = atoi(argv[5]);
-		program_info.number_of_compiles_required = atoi(argv[6]);
-		program_info.dongle_cooldown = atoi(argv[7]);
-		program_info.scheduler = argv[8];
-		if(program_info.scheduler != "fifo" && program_info.scheduler != "edf"
-			&& program_info.scheduler != "FIFO" && program_info.scheduler != "EDF")
+		if (is_a_valid_shedular(&argv[8]))
 		{
-			printf("THE SCHEDULER must be fifo or edf");
-			return;
+			program_info->number_of_coders = atoi(argv[1]);
+			program_info->time_to_burnout = atoi(argv[2]);
+			program_info->time_to_compile = atoi(argv[3]);
+			program_info->time_to_debug = atoi(argv[4]);
+			program_info->time_to_refactor = atoi(argv[5]);
+			program_info->number_of_compiles_required = atoi(argv[6]);
+			program_info->dongle_cooldown = atoi(argv[7]);
+			program_info->scheduler = argv[8];
 		}
+		
 			
 	}
+	return (1);
+}
 
-	return program_info;
+int main()
+{
+	char *shedular = "edf";
+
+	printf("the shedular fun = %i", is_a_valid_shedular(&shedular));
 }

@@ -5,6 +5,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 
@@ -45,7 +46,7 @@ typedef struct	s_coder
 
 
 
-t_shared_info	parsing_codexion(int argc, char **argv);
+int	parsing_codexion(int argc, char **argv, t_shared_info *program_info);
 
 
 
