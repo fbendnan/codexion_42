@@ -4,32 +4,39 @@
 
 
 // here i am gonna fill the shared info struct here and returned as return
+/*
+1- reject neg numbers
+2- reject num > INT_MAX_MIN(we should check the lent before)
+3- 
+*/
 
 #include "codexion.h"
 
-int is_a_valid_number(char* a)
+static void Display_error(char* error_msg)
+{
+	int error_len = strlen(error_msg);
+	write(2, error_msg , error_len);
+
+}
+
+static int is_a_valid_number(char* a)
 {
 	int	i;
 
 	i = 0;
-	while (a[i] == '+' || a[i] == '-')
+	if (a[i] == '+')
 		i++;
-	
+	else if (a[i] == '-')
+		return(Display_error("negative numbers are invalid!"), 0);
+
+	if (a[i] != '+' && a[i] != '-')
+		return(Display_error("negative numbers are invalid!"), 0);
 	while(a[i])
 	{
 		printf("a[%i] = %i\n", i, a[i]);
 		if(a[i] < '0' && a[i] > '9')
-		{
-			printf("check all arguments to be valid\n");
-			return (0);
-		}
-		
+			return (Display_error("check all arguments to be valid\n"), 0);
 		i++;
-	}
-	if (atoi(a[i]) < 0)
-	{
-		printf("negative arguments are invalid\n");
-		return (0);
 	}
 	return (1);
 }
@@ -92,6 +99,8 @@ int	parsing_codexion(int argc, char **argv, t_shared_info *program_info)
 int main()
 {
 	char *shedular = "edf";
+	const char *N = "933534637824738344";
 
 	printf("the shedular fun = %i", is_a_valid_shedular(&shedular));
+	printf("\nthe int max greather = %i\n", atoi(N));
 }
