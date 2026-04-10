@@ -21,42 +21,45 @@ static void Display_error(char* error_msg)
 
 static int is_a_valid_number(char* a)
 {
-	int	i;
-
-	i = 0;
-	if (a[i] == '+')
-		i++;
-	else if (a[i] == '-')
+	if (*a == '+')
+		a++;
+	else if (*a == '-')
 		return(Display_error("negative numbers are invalid!"), 0);
-
-	if (a[i] != '+' && a[i] != '-')
-		return(Display_error("negative numbers are invalid!"), 0);
-	while(a[i])
-	{
-		printf("a[%i] = %i\n", i, a[i]);
-		if(a[i] < '0' && a[i] > '9')
-			return (Display_error("check all arguments to be valid\n"), 0);
-		i++;
-	}
+	else if (*a < '0' || *a > '9')
+		return(Display_error("numbers are invalid!"), 0);
 	return (1);
 }
 
-
-int is_a_valid_shedular(char *shedular[])
+static int is_letter(char a)
+{
+	return ((a <= 'A' && a >= 'Z') || (a <= 'a' && a >= 'z'));
+}
+static int is_a_valid_shedular(char *shedular[])
 {
 	int i = 0;
+	int res = 0;
 	char *shedulars[2] = {"EDF", "FIFO"};
-	while (shedular[0][i])
+	int shed_len = strlen(*shedular);
+	while (**shedular)
 	{
-		if ((shedular[0][i] <= 'A' && shedular[0][i] >= 'Z') 
-			&& (shedular[0][i] <= 'a' && shedular[0][i] >= 'z'))
-			return (0);
-		if (shedular[0][i]<= 'a' && shedular[0][i] >= 'z')
-			shedular[0][i] += 32;
-		i++;
+		// if (!is_letter(shedular[0][i]))
+		// 	return (0);
+		if (**shedular >= 'a' && **shedular <= 'z')
+		{
+			**shedular -= 32;
+			printf("dkheeelt\n");
+		}
+		printf("\nthe shedular[0][%i] is %c", i, *shedular[i]);
+		
+		(*shedular)++;
 	}
-	printf("strcmp(shedulars[0], *shedular) = %i\n", strcmp("GHJ", *shedular));
-	printf("strcmp(shedulars[1], *shedular) = %i\n", strcmp(shedulars[1], *shedular));
+
+	printf("\nthe shedular is %s\n", *(shedular)-shed_len);
+	*shedular = *(shedular)-shed_len;
+	if (strcmp(shedulars[0], *(shedular)) == 0)
+		return (1);
+	else if (strcmp(shedulars[1], *(shedular)) == 0)
+		return (1);
 	
 	return (0);
 }
@@ -98,9 +101,9 @@ int	parsing_codexion(int argc, char **argv, t_shared_info *program_info)
 
 int main()
 {
-	char *shedular = "edf";
-	const char *N = "933534637824738344";
+	char *shedular = malloc(5);
+	strcpy(shedular, "edf");
 
 	printf("the shedular fun = %i", is_a_valid_shedular(&shedular));
-	printf("\nthe int max greather = %i\n", atoi(N));
+	free(shedular);
 }
