@@ -17,7 +17,7 @@ int main(int argc, char **argv)
     printf("time_to_debug = %i \n", info.time_to_debug);
     printf("time_to_refactor = %i \n", info.time_to_refactor);
     printf("number_of_compiles_required = %i \n", info.number_of_compiles_required);
-    printf("scheduler = %s \n", info.scheduler);
+    // printf("scheduler = %s \n", info.scheduler);
 
 
     // pthread_t coder1;
