@@ -41,14 +41,14 @@ typedef struct	s_coder
 	t_dongle		*right_dongle;
 	t_dongle		*left_dongle;
 	t_shared_info 	*infos;
+	int				las_time_compilation;
 	///add last time of finishing compilation
 }	t_coder;
 
-
-
-
-int	parsing_codexion(int argc, char **argv, t_shared_info *program_info);
-
-
+void	*start_simulation(void *argv);
+int		parsing_codexion(int argc, char **argv, t_shared_info *program_info);
+void	initialize_dongles(int number_of_dongles, t_dongle *dongles);
+void	initialize_coders(t_shared_info *infos, t_dongle *dongles, t_coder *coders);
+void create_threads(t_coder *coders);
 
 #endif

@@ -12,7 +12,7 @@
 
 int main(int argc, char **argv)
 {
-    t_shared_info   *info;
+    t_shared_info   info;
     t_coder         *coders;
     t_dongle        *dongles;
 
@@ -28,13 +28,21 @@ int main(int argc, char **argv)
     // printf("scheduler = %s \n", info.scheduler);
 
 
-    if (parsing_codexion(argc, argv, info))
+    if (parsing_codexion(argc, argv, &info))
     {
-        dongles = malloc(info->number_of_coders * sizeof(t_dongle) + 1);
-        
+        dongles = malloc(info.number_of_coders * sizeof(t_dongle) + 1);
+        initialize_dongles(info.number_of_coders, dongles);
+        coders = malloc(info.number_of_coders * sizeof(t_coder) + 1);
+        initialize_coders(&info, dongles, coders);
+        create_threads(coders);
+
+
+
+        free(dongles);
+        free(coders);
     }
     
-
+    
     // pthread_t coder1;
     // pthread_mutex_t dongle1;
     // pthread_mutex_t dongle2;
