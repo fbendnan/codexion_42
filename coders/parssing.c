@@ -5,12 +5,14 @@
 
 // here i am gonna fill the shared info struct here and returned as return
 /*
-1- reject neg numbers and accepte legits
-2- reject num > INT_MAX_MIN(we should check the len before)
-3- a correct shedular that we should use heap(malloc) 
-  -->to make modifications on it to not being in read only memory
-4- timestamp > 60ms
-5- burnout > .....
+1- reject neg numbers and nn valid num(done)
+2- reject num > INT_MAX_MIN(we should check the len before)(done)
+3- a correct shedular that we should use heap(malloc) (done)
+  -->to make modifications on it to not being in read only memory (done)
+4- burnout > ..... (done)
+5- timestamp > ???(the min val)
+6- INT_Max >= Numbers
+7- Number of coders !!(if i have 1 codder or 0 how my prog should behave)
 */
 
 #include "codexion.h"
@@ -54,37 +56,10 @@ static inline int is_letter(char a)
 	return ((a >= 'A' && a <= 'Z') || (a >= 'a' && a <= 'z'));
 }
 
-static int is_a_valid_shedular(char *shedular[])
-{
-	int res = 0;
-	char *shedulars[2] = {"EDF", "FIFO"};
-	int shed_len = strlen(*shedular);
-	while (**shedular)
-	{
-		if (!is_letter(**shedular))
-			return (0);
-		if (**shedular >= 'a' && **shedular <= 'z')
-		{
-			**shedular -= 32;
-		}		
-		(*shedular)++;
-	}
-
-	*shedular = *(shedular)-shed_len;
-	if (strcmp(shedulars[0], *(shedular)) == 0)
-		return (1);
-	else if (strcmp(shedulars[1], *(shedular)) == 0)
-		return (1);
-	
-	return (0);
-}
-
-/*
 static int is_a_valid_shedular(char *s)
 {
     int i = 0;
 
-    // convert to uppercase safely
     while (s[i])
     {
         if (!is_letter(s[i]))
@@ -99,48 +74,14 @@ static int is_a_valid_shedular(char *s)
 
     return (0);
 }
-*/
 
-int	parsing_codexion(int argc, char **argv, t_shared_info *program_info)
+
+static inline int is_data_logicaly_valid(t_shared_info program_info)
 {
-	int	i;
-
-	i = 1;
-	if(argc < 9)
-		Display_error("you must enter 8 arguments follow: "
-			"number_of_coders time_to_burnout time_to_compile "
-			"time_to_debug time_to_refactor number_of_compiles_required "
-			"dongle_cooldown scheduler");
-	else
-	{
-		while (i < 8)
-		{
-			if(!is_a_valid_number(argv[i]))
-				return(0);
-
-			i++;
-		}
-			
-		program_info->number_of_coders = atoi(argv[1]);
-		program_info->time_to_burnout = atoi(argv[2]);
-
-		program_info->time_to_compile = atoi(argv[3]);
-		program_info->time_to_debug = atoi(argv[4]);
-		program_info->time_to_refactor = atoi(argv[5]);
-		program_info->number_of_compiles_required = atoi(argv[6]);
-		program_info->dongle_cooldown = atoi(argv[7]);
-		program_info->scheduler = malloc(strlen(argv[8]) + 1);
-		strcpy(program_info->scheduler, argv[8]);
-
-		if (!is_a_valid_shedular(&(program_info->scheduler)))
-			return ((program_info->scheduler = NULL),
-			Display_error("Enter a valid schedular(FIFO/EDF)\n"), 0);
-	}
-	return (1);
+	return (program_info.time_to_burnout > program_info.time_to_compile + 
+		program_info.time_to_debug + program_info.time_to_refactor + program_info.dongle_cooldown);
 }
 
-
-/*
 int parsing_codexion(int argc, char **argv, t_shared_info *program_info)
 {
     int i = 1;
@@ -175,6 +116,8 @@ int parsing_codexion(int argc, char **argv, t_shared_info *program_info)
         return (Display_error("Enter a valid scheduler (FIFO/EDF)\n"), 0);
     }
 
+	if (!is_data_logicaly_valid(*program_info))
+		return (Display_error("Data is illogic, Enter a logic data\n"), 0);
+
     return (1);
 }
-*/
