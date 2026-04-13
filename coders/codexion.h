@@ -7,10 +7,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
+#include <sys/time.h>
 
 
 //dongle struct
+
+
+// struct timeval {
+//     long tv_sec;  // seconds
+//     long tv_usec; // microseconds (1 second = 1,000,000 microseconds)
+// };
 
 typedef struct	s_dongle
 {
