@@ -22,7 +22,7 @@ void	initialize_coders(t_shared_info *infos, t_dongle *dongles, t_coder *coders)
 	i = 0;
 	while (i < infos->number_of_coders)
 	{
-		coders[i].id = i;
+		coders[i].id = i + 1;
 		/////////////////////////
 		////////////////
 		coders[i].compiles_done = 0;
