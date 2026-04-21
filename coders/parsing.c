@@ -119,8 +119,8 @@ int parsing_codexion(int argc, char **argv, t_shared_info *program_info)
         return (Display_error("Enter a valid scheduler (FIFO/EDF)\n"), 0);
     }
 
-	if (!is_data_logicaly_valid(*program_info))
-		return (Display_error("Data is illogic, Enter a logic data\n"), 0);
+	// if (!is_data_logicaly_valid(*program_info))
+	// 	return (Display_error("Data is illogic, Enter a logic data\n"), 0);
 
     return (1);
 }

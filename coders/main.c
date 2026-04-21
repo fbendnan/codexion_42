@@ -15,34 +15,98 @@ int main(int argc, char **argv)
     t_shared_info   info;
     t_coder         *coders;
     t_dongle        *dongles;
-
-    //------------------testing the parsing------------------------
-
-    // int h = parsing_codexion(argc, argv, &info);
-    // printf("number of coders = %i \n", info.number_of_coders);
-    // printf("time_to_burnout = %i \n", info.time_to_burnout);
-    // printf("time_to_compile = %i \n", info.time_to_compile);
-    // printf("time_to_debug = %i \n", info.time_to_debug);
-    // printf("time_to_refactor = %i \n", info.time_to_refactor);
-    // printf("number_of_compiles_required = %i \n", info.number_of_compiles_required);
-    // printf("scheduler = %s \n", info.scheduler);
+    t_simulation    sim;
+    t_monitor_args  mon_args;
+    pthread_t       monitor_thread;
+    int             i;
 
 
-    if (parsing_codexion(argc, argv, &info))
+    if (!parsing_codexion(argc, argv, &info))
+        return (1);
+
+    // Set start time for relative logging
+    info.start_time = get_time_in_ms();
+    pthread_mutex_init(&info.print_mutex, NULL);
+
+    // Allocate and initialize dongles
+    dongles = malloc(sizeof(t_dongle) * info.number_of_coders);
+    if (!dongles)
     {
-        dongles = malloc(info.number_of_coders * sizeof(t_dongle) + 1);
-        initialize_dongles(info.number_of_coders, dongles);
-        coders = malloc(info.number_of_coders * sizeof(t_coder) + 1);
-        initialize_coders(&info, dongles, coders);
-    	pthread_mutex_init(&info.print_mutex, NULL);
+        write(2, "malloc failed\n", 14);
+        return (1);
+    }
+    initialize_dongles(info.number_of_coders, dongles);
 
-        create_threads(coders);
+    // Initialize simulation state
+    init_simulation(&sim);
 
-
-
+    // Allocate and initialize coders
+    coders = malloc(sizeof(t_coder) * info.number_of_coders);
+    if (!coders)
+    {
+        write(2, "malloc failed\n", 14);
         free(dongles);
-        free(coders);
+        return (1);
+    }
+    initialize_coders(&info, dongles, coders, &sim);
+
+    // Create coder threads
+    i = 0;
+    while (i < info.number_of_coders)
+    {
+        pthread_create(&coders[i].thread_id, NULL, start_simulation, &coders[i]);
+        i++;
     }
 
+    // Create monitor thread
+    mon_args.coders = coders;
+    mon_args.info = &info;
+    mon_args.sim = &sim;
+    pthread_create(&monitor_thread, NULL, monitor_routine, &mon_args);
+
+    // Join coder threads
+    i = 0;
+    while (i < info.number_of_coders)
+    {
+        pthread_join(coders[i].thread_id, NULL);
+        i++;
+    }
+
+    // Join monitor thread
+    pthread_join(monitor_thread, NULL);
+
+    // Cleanup
+    i = 0;
+    while (i < info.number_of_coders)
+    {
+        pthread_mutex_destroy(&dongles[i].mutex);
+        pthread_cond_destroy(&dongles[i].cond);
+        i++;
+    }
+    pthread_mutex_destroy(&info.print_mutex);
+    pthread_mutex_destroy(&sim.mutex);
+    free(info.scheduler);
+    free(dongles);
+    free(coders);
+
     return (0);
+
+
+    // if (parsing_codexion(argc, argv, &info))
+    // {
+    //     dongles = malloc(info.number_of_coders * sizeof(t_dongle) + 1);
+    //     initialize_dongles(info.number_of_coders, dongles);
+    //     coders = malloc(info.number_of_coders * sizeof(t_coder) + 1);
+    //     initialize_coders(&info, dongles, coders);
+    
+    // 	pthread_mutex_init(&info.print_mutex, NULL);
+
+    //     create_threads(coders);
+
+
+
+    //     free(dongles);
+    //     free(coders);
+    // }
+
 }
