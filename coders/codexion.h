@@ -35,6 +35,8 @@ typedef struct	s_shared_info
 	int		number_of_compiles_required;
 	int		dongle_cooldown;
 	char*	scheduler;
+	pthread_mutex_t		print_mutex; //to loock print
+
 }	t_shared_info;
 
 //coder struct
@@ -48,6 +50,7 @@ typedef struct	s_coder
 	t_dongle		*left_dongle;
 	t_shared_info 	*infos;
 	int				las_time_compilation;
+
 	///add last time of finishing compilation
 }	t_coder;
 

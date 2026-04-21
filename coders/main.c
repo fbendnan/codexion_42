@@ -1,3 +1,6 @@
+
+//main.c
+
 #include "codexion.h"
 
 // void *do_compilation(void *comp)
@@ -31,6 +34,8 @@ int main(int argc, char **argv)
         initialize_dongles(info.number_of_coders, dongles);
         coders = malloc(info.number_of_coders * sizeof(t_coder) + 1);
         initialize_coders(&info, dongles, coders);
+    	pthread_mutex_init(&info.print_mutex, NULL);
+
         create_threads(coders);
 
 
