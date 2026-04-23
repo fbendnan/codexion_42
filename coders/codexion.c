@@ -6,13 +6,13 @@
 void *start_simulation(void *argv)
 {
     t_coder  *coder;
-    long     start;
+    // long     start;
     t_dongle *first;
     t_dongle *second;
     int      keep_running;
 
     coder = (t_coder *)argv;
-    start = get_time_in_ms();
+    // start = get_time_in_ms();
 
     // Decide lock order to prevent deadlock
     if (coder->id % 2 == 0)
