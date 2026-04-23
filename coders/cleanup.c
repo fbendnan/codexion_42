@@ -30,7 +30,7 @@ void cleanup(t_dongle *dongles, t_coder *coders, t_shared_info *info, t_simulati
         }
 
         // Destroy the dongle's condition variable (if you kept it)
-        pthread_cond_destroy(&dongles[i].cond);
+        // pthread_cond_destroy(&dongles[i].cond);
 
         i++;
     }

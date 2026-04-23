@@ -1,11 +1,10 @@
-// scheduler.c
 #include "codexion.h"
 
-long get_request_priority(t_coder *coder)
+long	get_request_priority(t_coder *coder)
 {
     if (strcmp(coder->infos->scheduler, "FIFO") == 0)
         return (get_time_in_ms());  // arrival time
-    else  // EDF
+    else
         return (coder->last_time_compilation + coder->infos->time_to_burnout);
 }
 
