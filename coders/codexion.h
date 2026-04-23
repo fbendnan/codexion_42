@@ -9,17 +9,25 @@
 #include <unistd.h>
 #include <sys/time.h>
 
+typedef struct s_request_node
+{
+	int		id;
+	long	priority_t;
+	struct s_request_node *next;
+} t_request_node;
+
 
 typedef struct	s_dongle
 {
 	int		id;
-	pthread_mutex_t		mutex; //a dongle is a mutex
+	pthread_mutex_t		mutex;
 	int					in_use;
 	pthread_cond_t		cond;
 	long				cooldown_until;
+	t_request_node		*wait_queue;
+
 }	t_dongle;
 
-//shared info struct
 typedef struct	s_shared_info
 {
 	int		number_of_coders;
@@ -31,11 +39,9 @@ typedef struct	s_shared_info
 	int		dongle_cooldown;
 	char*	scheduler;
 	long	start_time;
-	pthread_mutex_t		print_mutex; //to loock print
-
+	pthread_mutex_t		print_mutex;
 }	t_shared_info;
 
-//coder struct
 typedef struct	s_coder
 {
 	int				id;
@@ -48,7 +54,6 @@ typedef struct	s_coder
 	long				last_time_compilation;
 	int             *sim_running;            // pointer to sim->running
     pthread_mutex_t *sim_mutex;              // pointer to sim->mutex
-
 	///add last time of finishing compilation
 }	t_coder;
 
