@@ -6,7 +6,7 @@
 /*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 19:38:45 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/04/24 12:56:28 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/04/24 16:59:23 by fbendnan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ typedef struct s_monitor
 	t_simulation	*sim;
 }	t_monitor;
 
-/* Function prototypes */
 void			*start_simulation(void *argv);
 int				parsing_codexion(int argc, char **argv,
 					t_shared_info *program_info);
@@ -103,6 +102,6 @@ void			cleanup(t_dongle *dongles, t_coder *coders,
 void			display_error(char *error_msg);
 int				is_a_valid_number(char *a);
 int				is_letter(char a);
-void wait_coders_creation(t_coder *coders);
+void 			wait_coders_creation(t_coder *coders);
 
 #endif

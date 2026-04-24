@@ -6,7 +6,7 @@
 /*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 13:30:56 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/04/24 13:30:57 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/04/24 16:42:11 by fbendnan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void initialize_dongles(int number_of_dongles, t_dongle *dongles)
     {
         dongles[i].id = i;
         pthread_mutex_init(&dongles[i].mutex, NULL);
-        // pthread_cond_init(&dongles[i].cond, NULL);
         dongles[i].in_use = 0;
         dongles[i].cooldown_until = 0;
         dongles[i].wait_queue = NULL;
