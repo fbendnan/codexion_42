@@ -1,4 +1,14 @@
-//monitor.c
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   monitor.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/24 13:30:08 by fbendnan          #+#    #+#             */
+/*   Updated: 2026/04/24 13:30:13 by fbendnan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "codexion.h"
 
@@ -43,14 +53,14 @@ static int check_burnout(t_coder *coders, int n, long burnout_time, long start)
 
 void *monitor_routine(void *arg)
 {
-	t_monitor_args	*args;
+	t_monitor	*args;
 	t_simulation	*sim;
 	t_coder			*coders;
 	t_shared_info	*info;
 	long			start_time;
 	int				stop;
 
-	args = (t_monitor_args *)arg;
+	args = (t_monitor *)arg;
 	sim = args->sim;
 	coders = args->coders;
 	info = args->info;
@@ -72,5 +82,5 @@ void *monitor_routine(void *arg)
 		}
 		pthread_mutex_unlock(&sim->mutex);
 	}
-	return (NULL);	
+	return (NULL);
 }

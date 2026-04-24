@@ -6,7 +6,7 @@
 /*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 19:38:45 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/04/23 19:39:45 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/04/24 12:56:28 by fbendnan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/time.h>
-// #include <string.h>
+#include <string.h>
 
 typedef struct s_request_node
 {
@@ -74,12 +74,12 @@ typedef struct s_simulation
 	pthread_mutex_t	mutex;
 }	t_simulation;
 
-typedef struct s_monitor_args
+typedef struct s_monitor
 {
 	t_coder			*coders;
 	t_shared_info	*info;
 	t_simulation	*sim;
-}	t_monitor_args;
+}	t_monitor;
 
 /* Function prototypes */
 void			*start_simulation(void *argv);
@@ -88,7 +88,7 @@ int				parsing_codexion(int argc, char **argv,
 void			initialize_dongles(int number_of_dongles, t_dongle *dongles);
 void			initialize_coders(t_shared_info *infos, t_dongle *dongles,
 					t_coder *coders, t_simulation *sim);
-void			create_threads(t_coder *coders);
+void			create_coders(t_coder *coders);
 void			*monitor_routine(void *arg);
 int				dongle_take(t_dongle *d, t_coder *coder);
 void			dongle_release(t_dongle *d, t_shared_info *info);
@@ -103,5 +103,6 @@ void			cleanup(t_dongle *dongles, t_coder *coders,
 void			display_error(char *error_msg);
 int				is_a_valid_number(char *a);
 int				is_letter(char a);
+void wait_coders_creation(t_coder *coders);
 
 #endif
