@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   scheduler.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbendnane <fbendnane@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 13:29:42 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/04/24 13:29:43 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/04/24 22:58:25 by fbendnane        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,10 @@ t_request_node *queue_pop(t_dongle *d)
     return (first);
 }
 
-
 void queue_insert(t_dongle *d, t_request_node *new_node, char *scheduler)
 {
     t_request_node *curr;
     t_request_node *prev;
-
     new_node->next = NULL;
     if (!d->wait_queue)
     {
