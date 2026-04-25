@@ -6,7 +6,7 @@
 /*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 12:27:22 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/04/24 13:07:21 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/04/25 09:07:55 by fbendnan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main_process(t_shared_info *info)
 	init_simulation(&sim);
 	coders = malloc(sizeof(t_coder) * info->number_of_coders);
 	if (!coders)
-		return(display_error("Error: malloc failed\n"), free(dongles), 0);
+		return (display_error("Error: malloc failed\n"), free(dongles), 0);
 	initialize_coders(info, dongles, coders, &sim);
 	create_coders(coders);
 	monitor.coders = coders;
@@ -43,7 +43,7 @@ int	main_process(t_shared_info *info)
 int	main(int argc, char **argv)
 {
 	t_shared_info	info;
-		
+
 	if (!parsing_codexion(argc, argv, &info))
 		return (1);
 	info.start_time = get_time_in_ms();

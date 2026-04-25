@@ -6,7 +6,7 @@
 /*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 19:38:45 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/04/24 16:59:23 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/04/25 11:42:49 by fbendnan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_shared_info
 	int				time_to_debug;
 	int				time_to_refactor;
 	int				number_of_compiles_required;
-	int				dongle_cooldown;
+	int				time_to_cooldown;
 	char			*scheduler;
 	long			start_time;
 	pthread_mutex_t	print_mutex;

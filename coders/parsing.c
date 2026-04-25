@@ -6,11 +6,12 @@
 /*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 13:30:25 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/04/24 13:30:26 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/04/25 11:43:20 by fbendnan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // ./codexion 6 1200 200 200 150 7 100 fifo
+//int_max check
 
 #include "codexion.h"
 
@@ -53,7 +54,7 @@ int parsing_codexion(int argc, char **argv, t_shared_info *program_info)
     program_info->time_to_debug = atoi(argv[4]);
     program_info->time_to_refactor = atoi(argv[5]);
     program_info->number_of_compiles_required = atoi(argv[6]);
-    program_info->dongle_cooldown = atoi(argv[7]);
+    program_info->time_to_cooldown = atoi(argv[7]);
 
     program_info->scheduler = malloc(strlen(argv[8]) + 1);
     if (!program_info->scheduler)
