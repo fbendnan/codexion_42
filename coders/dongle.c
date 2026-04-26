@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dongle.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/26 16:15:24 by fbendnan          #+#    #+#             */
+/*   Updated: 2026/04/26 16:27:45 by fbendnan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "codexion.h"
 
 int	waiting_room(t_dongle *d, t_coder *coder)
@@ -15,18 +27,32 @@ int	waiting_room(t_dongle *d, t_coder *coder)
 	req_node->personal_cond = &coder->personal_cond;
 	req_node->personal_mutex = &coder->personal_mutex;
 	req_node->next = NULL;
-
 	queue_insert(d, req_node, coder->infos->scheduler);
-
-	/* Lock personal mutex *before* releasing dongle to avoid lost signal */
 	pthread_mutex_lock(&coder->personal_mutex);
 	pthread_mutex_unlock(&d->mutex);
-
-	/* Sleep – the release function will signal us */
 	pthread_cond_wait(&coder->personal_cond, &coder->personal_mutex);
 	pthread_mutex_unlock(&coder->personal_mutex);
-
 	return (1);
+}
+
+void	waiting_cooldown(t_dongle *d, t_coder *coder)
+{
+	long	now;
+
+	now = get_time_in_ms();
+	while (now < d->cooldown_until)
+	{
+		pthread_mutex_unlock(&d->mutex);
+		usleep(100);
+		pthread_mutex_lock(&d->mutex);
+		now = get_time_in_ms();
+	}
+	d->in_use = 1;
+	pthread_mutex_unlock(&d->mutex);
+	pthread_mutex_lock(&coder->infos->print_mutex);
+	printf("%ld %d has taken a dongle\n",
+		now - coder->infos->start_time, coder->id);
+	pthread_mutex_unlock(&coder->infos->print_mutex);
 }
 
 int	dongle_take(t_dongle *d, t_coder *coder)
@@ -35,7 +61,6 @@ int	dongle_take(t_dongle *d, t_coder *coder)
 
 	pthread_mutex_lock(&d->mutex);
 	now = get_time_in_ms();
-
 	if (!d->in_use && now >= d->cooldown_until && !d->wait_queue)
 	{
 		d->in_use = 1;
@@ -48,37 +73,13 @@ int	dongle_take(t_dongle *d, t_coder *coder)
 	}
 	if (!d->in_use && now < d->cooldown_until && !d->wait_queue)
 	{
-		while (now < d->cooldown_until)
-		{
-			pthread_mutex_unlock(&d->mutex);
-			usleep(100);
-			pthread_mutex_lock(&d->mutex);
-			now = get_time_in_ms();
-		}
-		d->in_use = 1;
-		pthread_mutex_unlock(&d->mutex);
-		pthread_mutex_lock(&coder->infos->print_mutex);
-		printf("%ld %d has taken a dongle\n",
-			now - coder->infos->start_time, coder->id);
-		pthread_mutex_unlock(&coder->infos->print_mutex);
+		waiting_cooldown(d, coder);
 		return (1);
 	}
 	if (!waiting_room(d, coder))
 		return (0);
 	pthread_mutex_lock(&d->mutex);
-	now = get_time_in_ms();
-	while (now < d->cooldown_until)
-	{
-		pthread_mutex_unlock(&d->mutex);
-		usleep(100);
-		pthread_mutex_lock(&d->mutex);
-		now = get_time_in_ms();
-	}
-	pthread_mutex_unlock(&d->mutex);
-	pthread_mutex_lock(&coder->infos->print_mutex);
-	printf("%ld %d has taken a dongle\n",
-		get_time_in_ms() - coder->infos->start_time, coder->id);
-	pthread_mutex_unlock(&coder->infos->print_mutex);
+	waiting_cooldown(d, coder);
 	return (1);
 }
 

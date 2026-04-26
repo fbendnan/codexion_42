@@ -6,7 +6,7 @@
 /*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 13:29:52 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/04/25 12:22:45 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/04/26 16:20:24 by fbendnan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ void	*start_simulation(void *argv)
 	decide_order(coder, &first, &second);
 	while (1)
 	{
-		pthread_mutex_lock(coder->sim_mutex);
-		pthread_mutex_unlock(coder->sim_mutex);
+		if (coder->compiles_done >= coder->infos->number_of_compiles_required)
+			break;
 		if (!(*(coder->sim_running)))
 			break ;
 		if (!dongle_take(first, coder))

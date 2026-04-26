@@ -6,12 +6,11 @@
 /*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 13:30:08 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/04/24 16:45:09 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/04/26 16:15:02 by fbendnan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
-
 
 static int	all_coders_done(t_coder *coders, int n, int required)
 {
@@ -27,7 +26,6 @@ static int	all_coders_done(t_coder *coders, int n, int required)
 	return (1);
 }
 
-
 static int check_burnout(t_coder *coders, int n, long burnout_time, long start)
 {
 	int		i;
@@ -38,7 +36,8 @@ static int check_burnout(t_coder *coders, int n, long burnout_time, long start)
 	while (i < n)
 	{
 		if (coders[i].last_time_compilation != 0
-			&& now - coders[i].last_time_compilation > burnout_time)
+			&& now - coders[i].last_time_compilation > burnout_time
+			&& coders[i].compiles_done < coders[i].infos->number_of_compiles_required)
 		{
 			pthread_mutex_lock(&coders[i].infos->print_mutex);
             printf("%ld %d burned out\n", now - start, coders[i].id);
@@ -49,7 +48,6 @@ static int check_burnout(t_coder *coders, int n, long burnout_time, long start)
 	}
 	return (0);
 }
-
 
 void *monitor_routine(void *arg)
 {
