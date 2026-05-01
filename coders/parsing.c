@@ -6,7 +6,7 @@
 /*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 13:30:25 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/04/25 11:43:20 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/05/01 18:22:30 by fbendnan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ int parsing_codexion(int argc, char **argv, t_shared_info *program_info)
 
     strcpy(program_info->scheduler, argv[8]);
 
-    if (program_info->number_of_coders < 2)
-        return (display_error("At least 2 coders are required\n"), 0);
+    // if (program_info->number_of_coders < 2)
+    //     return (display_error("At least 2 coders are required\n"), 0);
 
     if (!is_a_valid_shedular(program_info->scheduler))
     {

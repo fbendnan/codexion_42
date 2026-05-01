@@ -6,7 +6,7 @@
 /*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 12:27:22 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/04/25 09:07:55 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/05/01 18:21:15 by fbendnan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ int	main_process(t_shared_info *info)
 	t_simulation	sim;
 	t_monitor		monitor;
 	pthread_t		monitor_thread;
-
+	
+	if (sizeof(t_dongle) * info->number_of_coders > (__INT_MAX__)-1)
+		return 0;
 	dongles = malloc(sizeof(t_dongle) * info->number_of_coders);
 	if (!dongles)
 		return (display_error("Error: malloc failed\n"), 0);

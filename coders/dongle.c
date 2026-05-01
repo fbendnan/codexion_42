@@ -6,7 +6,7 @@
 /*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 16:15:24 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/04/26 16:27:45 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/05/01 19:08:02 by fbendnan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	waiting_cooldown(t_dongle *d, t_coder *coder)
 	pthread_mutex_unlock(&d->mutex);
 	pthread_mutex_lock(&coder->infos->print_mutex);
 	printf("%ld %d has taken a dongle\n",
-		now - coder->infos->start_time, coder->id);
+		get_time_in_ms() - coder->infos->start_time, coder->id);
 	pthread_mutex_unlock(&coder->infos->print_mutex);
 }
 
@@ -67,7 +67,7 @@ int	dongle_take(t_dongle *d, t_coder *coder)
 		pthread_mutex_unlock(&d->mutex);
 		pthread_mutex_lock(&coder->infos->print_mutex);
 		printf("%ld %d has taken a dongle\n",
-			now - coder->infos->start_time, coder->id);
+			get_time_in_ms() - coder->infos->start_time, coder->id);
 		pthread_mutex_unlock(&coder->infos->print_mutex);
 		return (1);
 	}
