@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbendnane <fbendnane@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 19:25:58 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/05/01 18:37:42 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/05/13 11:18:21 by fbendnane        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,21 @@ int	is_a_valid_number(char *a)
 int	is_letter(char a)
 {
 	return ((a >= 'A' && a <= 'Z') || (a >= 'a' && a <= 'z'));
+}
+
+void precise_usleep(long time_in_ms, t_simulation *sim)
+{
+    long start = get_time_in_ms();
+    
+    while (get_time_in_ms() - start < time_in_ms)
+    {
+        pthread_mutex_lock(&sim->mutex);
+        if (!sim->running) // Check if we should stop early
+        {
+            pthread_mutex_unlock(&sim->mutex);
+            return;
+        }
+        pthread_mutex_unlock(&sim->mutex);
+        usleep(100); // Small chunks
+    }
 }

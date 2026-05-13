@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbendnane <fbendnane@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 19:38:45 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/04/25 11:42:49 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/05/13 11:33:09 by fbendnane        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_dongle
 	int				in_use;
 	long			cooldown_until;
 	t_request_node	*wait_queue;
+	pthread_cond_t	cond;
 }	t_dongle;
 
 typedef struct s_shared_info
@@ -52,6 +53,12 @@ typedef struct s_shared_info
 	pthread_mutex_t	print_mutex;
 }	t_shared_info;
 
+typedef struct s_simulation
+{
+	int				running;
+	pthread_mutex_t	mutex;
+}	t_simulation;
+
 typedef struct s_coder
 {
 	int				id;
@@ -62,17 +69,12 @@ typedef struct s_coder
 	t_dongle		*left_dongle;
 	t_shared_info	*infos;
 	long			last_time_compilation;
-	int				*sim_running;
-	pthread_mutex_t	*sim_mutex;
+	// int				*sim_running;
+	// pthread_mutex_t	*sim_mutex;
+	t_simulation    *sim;
 	pthread_cond_t	personal_cond;
 	pthread_mutex_t	personal_mutex;
 }	t_coder;
-
-typedef struct s_simulation
-{
-	int				running;
-	pthread_mutex_t	mutex;
-}	t_simulation;
 
 typedef struct s_monitor
 {
@@ -103,5 +105,6 @@ void			display_error(char *error_msg);
 int				is_a_valid_number(char *a);
 int				is_letter(char a);
 void 			wait_coders_creation(t_coder *coders);
+void			precise_usleep(long time_in_ms, t_simulation *sim);
 
 #endif

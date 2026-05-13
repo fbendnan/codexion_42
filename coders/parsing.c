@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbendnane <fbendnane@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 13:30:25 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/05/01 18:22:30 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/05/13 07:19:52 by fbendnane        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ static int is_a_valid_shedular(char *s)
             s[i] -= 32;
         i++;
     }
-
     if (strcmp(s, "EDF") == 0 || strcmp(s, "FIFO") == 0)
         return (1);
 
@@ -61,9 +60,6 @@ int parsing_codexion(int argc, char **argv, t_shared_info *program_info)
         return (0);
 
     strcpy(program_info->scheduler, argv[8]);
-
-    // if (program_info->number_of_coders < 2)
-    //     return (display_error("At least 2 coders are required\n"), 0);
 
     if (!is_a_valid_shedular(program_info->scheduler))
     {

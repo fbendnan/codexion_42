@@ -3,14 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbendnane <fbendnane@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 13:30:56 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/04/24 16:42:11 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/05/13 11:27:52 by fbendnane        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-//init.c
 
 #include "codexion.h"
 
@@ -26,6 +24,7 @@ void initialize_dongles(int number_of_dongles, t_dongle *dongles)
         dongles[i].in_use = 0;
         dongles[i].cooldown_until = 0;
         dongles[i].wait_queue = NULL;
+        pthread_cond_init(&dongles[i].cond, NULL);
         i++;
     }
 }
@@ -44,8 +43,9 @@ void initialize_coders(t_shared_info *infos, t_dongle *dongles, t_coder *coders,
         coders[i].right_dongle = &dongles[(i + 1) % infos->number_of_coders];
         coders[i].left_dongle = &dongles[i];
         coders[i].infos = infos;
-        coders[i].sim_running = &sim->running;
-        coders[i].sim_mutex = &sim->mutex;
+        // coders[i].sim_running = &sim->running;
+        // coders[i].sim_mutex = &sim->mutex;
+        coders[i].sim = sim;
         pthread_cond_init(&coders[i].personal_cond, NULL);
         pthread_mutex_init(&coders[i].personal_mutex, NULL);
         i++;

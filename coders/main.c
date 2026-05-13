@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbendnane <fbendnane@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 12:27:22 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/05/01 18:21:15 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/05/13 11:43:35 by fbendnane        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	main_process(t_shared_info *info)
 	if (!coders)
 		return (display_error("Error: malloc failed\n"), free(dongles), 0);
 	initialize_coders(info, dongles, coders, &sim);
+	info->start_time = get_time_in_ms();
 	create_coders(coders);
 	monitor.coders = coders;
 	monitor.info = info;
@@ -38,7 +39,10 @@ int	main_process(t_shared_info *info)
 	pthread_create(&monitor_thread, NULL, monitor_routine, &monitor);
 	wait_coders_creation(coders);
 	pthread_join(monitor_thread, NULL);
+	// printf("heeeeeeeeeee %ld: \n", get_time_in_ms());
+
 	cleanup(dongles, coders, info, &sim);
+	// printf("heeeeeeeeeee %ld: \n", get_time_in_ms());
 	return (1);
 }
 
@@ -48,9 +52,12 @@ int	main(int argc, char **argv)
 
 	if (!parsing_codexion(argc, argv, &info))
 		return (1);
-	info.start_time = get_time_in_ms();
+	// info.start_time = get_time_in_ms();
 	pthread_mutex_init(&info.print_mutex, NULL);
+	// printf("heeeeeeeeeee 1:%ld \n", get_time_in_ms());
+
 	if (!main_process(&info))
 		return (1);
+	// printf("heeeeeeeeeee %ld: \n", get_time_in_ms());
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbendnane <fbendnane@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 13:30:42 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/04/26 15:51:11 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/05/13 09:59:55 by fbendnane        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void cleanup(t_dongle *dongles, t_coder *coders, t_shared_info *info, t_simulati
     {
         // Destroy dongle mutex
         pthread_mutex_destroy(&dongles[i].mutex);
+        pthread_cond_destroy(&dongles[i].cond);
+
 
         // Destroy per-coder personal condition variable and mutex
         pthread_cond_destroy(&coders[i].personal_cond);
@@ -40,10 +42,6 @@ void cleanup(t_dongle *dongles, t_coder *coders, t_shared_info *info, t_simulati
             free(tmp);
             tmp = next;
         }
-
-        // Destroy the dongle's condition variable (if you kept it)
-        // pthread_cond_destroy(&dongles[i].cond);
-
         i++;
     }
 

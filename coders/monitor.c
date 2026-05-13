@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbendnane <fbendnane@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 13:30:08 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/05/01 18:56:02 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/05/13 11:41:30 by fbendnane        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,11 @@ void *monitor_routine(void *arg)
 		{
 			sim->running = 0;
 			pthread_mutex_unlock(&sim->mutex);
-			exit(0);
+			// exit(0);
+			return (NULL);
 		}
 		pthread_mutex_unlock(&sim->mutex);
-		usleep(1000);
+		usleep(500);
 	}
 	return (NULL);
 }
