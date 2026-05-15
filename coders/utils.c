@@ -6,7 +6,7 @@
 /*   By: fbendnane <fbendnane@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 19:25:58 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/05/13 11:18:21 by fbendnane        ###   ########.fr       */
+/*   Updated: 2026/05/15 07:25:42 by fbendnane        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,12 @@ void precise_usleep(long time_in_ms, t_simulation *sim)
     while (get_time_in_ms() - start < time_in_ms)
     {
         pthread_mutex_lock(&sim->mutex);
-        if (!sim->running) // Check if we should stop early
+        if (!sim->running)
         {
             pthread_mutex_unlock(&sim->mutex);
             return;
         }
         pthread_mutex_unlock(&sim->mutex);
-        usleep(100); // Small chunks
+        usleep(100);
     }
 }
