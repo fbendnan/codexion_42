@@ -6,7 +6,7 @@
 /*   By: fbendnane <fbendnane@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 13:30:08 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/05/13 11:41:30 by fbendnane        ###   ########.fr       */
+/*   Updated: 2026/05/25 02:37:56 by fbendnane        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,7 @@ void *monitor_routine(void *arg)
 		{
 			sim->running = 0;
 			pthread_mutex_unlock(&sim->mutex);
-			// exit(0);
-			return (NULL);
+			exit(0);
 		}
 		pthread_mutex_unlock(&sim->mutex);
 		usleep(500);
