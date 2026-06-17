@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbendnane <fbendnane@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/23 19:38:45 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/05/13 11:33:09 by fbendnane        ###   ########.fr       */
+/*   Updated: 2026/06/17 12:21:51 by fbendnan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/time.h>
-#include <string.h>
+# include <string.h>
 
 typedef struct s_request_node
 {
@@ -69,9 +69,7 @@ typedef struct s_coder
 	t_dongle		*left_dongle;
 	t_shared_info	*infos;
 	long			last_time_compilation;
-	// int				*sim_running;
-	// pthread_mutex_t	*sim_mutex;
-	t_simulation    *sim;
+	t_simulation	*sim;
 	pthread_cond_t	personal_cond;
 	pthread_mutex_t	personal_mutex;
 }	t_coder;
@@ -104,7 +102,7 @@ void			cleanup(t_dongle *dongles, t_coder *coders,
 void			display_error(char *error_msg);
 int				is_a_valid_number(char *a);
 int				is_letter(char a);
-void 			wait_coders_creation(t_coder *coders);
+void			wait_coders_creation(t_coder *coders);
 void			precise_usleep(long time_in_ms, t_simulation *sim);
 
 #endif

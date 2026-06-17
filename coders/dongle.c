@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dongle.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbendnane <fbendnane@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/26 16:15:24 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/05/15 08:27:09 by fbendnane        ###   ########.fr       */
+/*   Updated: 2026/06/17 12:18:14 by fbendnan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int	dongle_take(t_dongle *d, t_coder *coder)
 
 	pthread_mutex_lock(&d->mutex);
 	now = get_time_in_ms();
-    
 	if (!d->in_use && now >= d->cooldown_until && !d->wait_queue)
 	{
 		if (!coder->sim->running)
@@ -74,11 +73,8 @@ int	dongle_take(t_dongle *d, t_coder *coder)
 		pthread_mutex_unlock(&coder->infos->print_mutex);
 		return (1);
 	}
-    	if (!d->in_use && now < d->cooldown_until && !d->wait_queue)
-	{
-		waiting_cooldown(d, coder);
-		return (1);
-	}    
+	if (!d->in_use && now < d->cooldown_until && !d->wait_queue)
+		return (waiting_cooldown(d, coder), 1);
 	if (!waiting_room(d, coder))
 		return (0);
 	pthread_mutex_lock(&d->mutex);

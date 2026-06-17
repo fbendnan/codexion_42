@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbendnane <fbendnane@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 13:29:52 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/05/13 15:10:41 by fbendnane        ###   ########.fr       */
+/*   Updated: 2026/06/17 12:22:54 by fbendnan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,7 @@ void	debug_and_refactor(t_coder *coder)
 	printf("%li %i is debugging\n",
 		get_time_in_ms() - coder->infos->start_time, coder->id);
 	pthread_mutex_unlock(&coder->infos->print_mutex);
-	precise_usleep(coder->infos->time_to_debug , coder->sim);
-
+	precise_usleep(coder->infos->time_to_debug, coder->sim);
 	if (!(coder->sim->running))
 		return ;
 	pthread_mutex_lock(&coder->infos->print_mutex);
@@ -71,7 +70,7 @@ void	*start_simulation(void *argv)
 	while (1)
 	{
 		if (coder->compiles_done >= coder->infos->number_of_compiles_required)
-			break;
+			break ;
 		if (!(coder->sim->running))
 			break ;
 		if (!dongle_take(first, coder))

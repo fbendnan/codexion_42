@@ -3,25 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbendnane <fbendnane@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 12:27:22 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/05/13 11:43:35 by fbendnane        ###   ########.fr       */
+/*   Updated: 2026/06/17 12:11:48 by fbendnan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-int	main_process(t_shared_info *info)
+int	main_process(t_shared_info *info, t_dongle *dongles, t_coder *coders)
 {
-	t_dongle		*dongles;
-	t_coder			*coders;
 	t_simulation	sim;
 	t_monitor		monitor;
 	pthread_t		monitor_thread;
-	
+
 	if (sizeof(t_dongle) * info->number_of_coders > (__INT_MAX__)-1)
-		return 0;
+		return (0);
 	dongles = malloc(sizeof(t_dongle) * info->number_of_coders);
 	if (!dongles)
 		return (display_error("Error: malloc failed\n"), 0);
@@ -39,25 +37,20 @@ int	main_process(t_shared_info *info)
 	pthread_create(&monitor_thread, NULL, monitor_routine, &monitor);
 	wait_coders_creation(coders);
 	pthread_join(monitor_thread, NULL);
-	// printf("heeeeeeeeeee %ld: \n", get_time_in_ms());
-
 	cleanup(dongles, coders, info, &sim);
-	// printf("heeeeeeeeeee %ld: \n", get_time_in_ms());
 	return (1);
 }
 
 int	main(int argc, char **argv)
 {
 	t_shared_info	info;
+	t_dongle		*dongles;
+	t_coder			*coders;
 
 	if (!parsing_codexion(argc, argv, &info))
 		return (1);
-	// info.start_time = get_time_in_ms();
 	pthread_mutex_init(&info.print_mutex, NULL);
-	// printf("heeeeeeeeeee 1:%ld \n", get_time_in_ms());
-
-	if (!main_process(&info))
+	if (!main_process(&info, dongles, coders))
 		return (1);
-	// printf("heeeeeeeeeee %ld: \n", get_time_in_ms());
 	return (0);
 }
