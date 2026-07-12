@@ -26,7 +26,7 @@ static int	all_coders_done(t_coder *coders, int n, int required)
 	return (1);
 }
 
-static int	check_burnout(t_coder *cdr, int n, long burnout_time, long start)
+static int	check_burnout(t_coder *cdr, int n, long burnout_time, long start, t_simulation	*sim)
 {
 	int		i;
 	long	now;
@@ -41,6 +41,7 @@ static int	check_burnout(t_coder *cdr, int n, long burnout_time, long start)
 		{
 			pthread_mutex_lock(&cdr[i].infos->print_mutex);
 			printf("%ld %d burned out\n", get_time_in_ms() - start, cdr[i].id);
+			sim->running = 0;
 			pthread_mutex_unlock(&cdr[i].infos->print_mutex);
 			return (1);
 		}
@@ -49,7 +50,7 @@ static int	check_burnout(t_coder *cdr, int n, long burnout_time, long start)
 	return (0);
 }
 
-int	should_stop(t_monitor *monitor)
+int	should_stop(t_monitor *monitor, t_simulation	*sim)
 {
 	t_coder			*coders;
 	t_shared_info	*info;
@@ -59,7 +60,7 @@ int	should_stop(t_monitor *monitor)
 	info = monitor->info;
 	start_time = info->start_time;
 	if (check_burnout(coders, info->number_of_coders, info->time_to_burnout,
-			start_time) || all_coders_done(coders, info->number_of_coders,
+			start_time, sim) || all_coders_done(coders, info->number_of_coders,
 			info->number_of_compiles_required))
 		return (1);
 	return (0);
@@ -75,7 +76,7 @@ void	*monitor_routine(void *arg)
 	while (1)
 	{
 		pthread_mutex_lock(&sim->mutex);
-		if (should_stop(monitor))
+		if (should_stop(monitor, sim))
 		{
 			sim->running = 0;
 			pthread_mutex_unlock(&sim->mutex);

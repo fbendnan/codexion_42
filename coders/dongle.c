@@ -48,6 +48,8 @@ void	waiting_cooldown(t_dongle *d, t_coder *coder)
 		now = get_time_in_ms();
 	}
 	d->in_use = 1;
+	if (!coder->sim->running)
+		return ;
 	pthread_mutex_unlock(&d->mutex);
 	pthread_mutex_lock(&coder->infos->print_mutex);
 	printf("%ld %d has taken a dongle\n",
@@ -63,11 +65,13 @@ int	dongle_take(t_dongle *d, t_coder *coder)
 	now = get_time_in_ms();
 	if (!d->in_use && now >= d->cooldown_until && !d->wait_queue)
 	{
+		// printf("coder->sim->running = %i\n", coder->sim->running);
 		if (!coder->sim->running)
 			return (0);
 		d->in_use = 1;
 		pthread_mutex_unlock(&d->mutex);
 		pthread_mutex_lock(&coder->infos->print_mutex);
+		// printf("coder->sim->running = %i\n", coder->sim->running);
 		printf("%ld %d has taken a dongle\n",
 			get_time_in_ms() - coder->infos->start_time, coder->id);
 		pthread_mutex_unlock(&coder->infos->print_mutex);

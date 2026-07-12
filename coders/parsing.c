@@ -51,6 +51,8 @@ int	parsing_codexion(int argc, char **argv, t_shared_info *program_info)
 	program_info->number_of_compiles_required = atoi(argv[6]);
 	program_info->time_to_cooldown = atoi(argv[7]);
 	program_info->scheduler = malloc(strlen(argv[8]) + 1);
+	if (program_info->number_of_coders < 2)
+		return (free(program_info->scheduler), display_error("Number of coders must be more than 1\n"), 0);
 	if (!program_info->scheduler)
 		return (0);
 	strcpy(program_info->scheduler, argv[8]);
