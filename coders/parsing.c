@@ -37,10 +37,10 @@ int	parsing_codexion(int argc, char **argv, t_shared_info *program_info)
 {
 	int	i;
 
-	i = 1;
+	i = 0;
 	if (argc != 9)
 		return (display_error("you must enter exactly 8 arguments\n"), 0);
-	while (i++ < 8)
+	while (++i < 8)
 		if (!is_a_valid_number(argv[i]))
 			return (0);
 	program_info->number_of_coders = atoi(argv[1]);

@@ -37,7 +37,10 @@ void	queue_insert(t_dongle *d, t_request_node *new_node, char *scheduler)
 
 	new_node->next = NULL;
 	if (!d->wait_queue)
-		return (d->wait_queue = new_node);
+	{
+		d->wait_queue = new_node;
+		return ;
+	}
 	if (strcmp(scheduler, "FIFO") == 0)
 	{
 		curr = d->wait_queue;

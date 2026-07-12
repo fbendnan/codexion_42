@@ -47,6 +47,8 @@ int	main(int argc, char **argv)
 	t_dongle		*dongles;
 	t_coder			*coders;
 
+	dongles = NULL;
+	coders = NULL;
 	if (!parsing_codexion(argc, argv, &info))
 		return (1);
 	pthread_mutex_init(&info.print_mutex, NULL);
