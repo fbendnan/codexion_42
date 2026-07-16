@@ -30,10 +30,34 @@ t_request_node	*queue_pop(t_dongle *d)
 	return (first);
 }
 
-void	queue_insert(t_dongle *d, t_request_node *new_node, char *scheduler)
+void	apply_edf(t_dongle *d, t_request_node *new_node)
 {
 	t_request_node	*curr;
 	t_request_node	*prev;
+
+	prev = NULL;
+	curr = d->wait_queue;
+	while (curr && curr->priority <= new_node->priority)
+	{
+		prev = curr;
+		curr = curr->next;
+	}
+	if (!prev)
+	{
+		new_node->next = d->wait_queue;
+		d->wait_queue = new_node;
+	}
+	else
+	{
+		prev->next = new_node;
+		new_node->next = curr;
+	}
+}
+
+void	queue_insert(t_dongle *d, t_request_node *new_node, char *scheduler)
+{
+	t_request_node	*curr;
+	// t_request_node	*prev;
 
 	new_node->next = NULL;
 	if (!d->wait_queue)
@@ -50,22 +74,6 @@ void	queue_insert(t_dongle *d, t_request_node *new_node, char *scheduler)
 	}
 	else
 	{
-		prev = NULL;
-		curr = d->wait_queue;
-		while (curr && curr->priority <= new_node->priority)
-		{
-			prev = curr;
-			curr = curr->next;
-		}
-		if (!prev)
-		{
-			new_node->next = d->wait_queue;
-			d->wait_queue = new_node;
-		}
-		else
-		{
-			prev->next = new_node;
-			new_node->next = curr;
-		}
+		apply_edf(d, new_node);
 	}
 }
