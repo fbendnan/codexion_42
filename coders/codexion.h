@@ -64,7 +64,6 @@ typedef struct s_coder
 	int				id;
 	pthread_t		thread_id;
 	long			compiles_done;
-	int				state;
 	t_dongle		*right_dongle;
 	t_dongle		*left_dongle;
 	t_shared_info	*infos;

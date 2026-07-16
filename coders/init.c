@@ -39,7 +39,6 @@ void	initialize_coders(t_shared_info *infos, t_dongle *dongles,
 	{
 		coders[i].id = i + 1;
 		coders[i].compiles_done = 0;
-		coders[i].state = 0;
 		coders[i].last_time_compilation = infos->start_time;
 		coders[i].right_dongle = &dongles[(i + 1) % infos->number_of_coders];
 		coders[i].left_dongle = &dongles[i];
