@@ -26,17 +26,18 @@ static int	all_coders_done(t_coder *coders, int n, int required)
 	return (1);
 }
 
-static int	check_burnout(t_coder *cdr, int n, long burnout_time, long start, t_simulation	*sim)
+static int	check_burnout(
+	t_coder *cdr, t_shared_info	*info, long start, t_simulation	*sim)
 {
 	int		i;
 	long	now;
 
 	now = get_time_in_ms();
 	i = 0;
-	while (i < n)
+	while (i < info->number_of_coders)
 	{
 		if (cdr[i].last_time_compilation != 0
-			&& now - cdr[i].last_time_compilation >= burnout_time
+			&& now - cdr[i].last_time_compilation >= info->time_to_burnout
 			&& cdr[i].compiles_done < cdr[i].infos->number_of_compiles_required)
 		{
 			pthread_mutex_lock(&cdr[i].infos->print_mutex);
@@ -59,9 +60,8 @@ int	should_stop(t_monitor *monitor, t_simulation	*sim)
 	coders = monitor->coders;
 	info = monitor->info;
 	start_time = info->start_time;
-	if (check_burnout(coders, info->number_of_coders, info->time_to_burnout,
-			start_time, sim) || all_coders_done(coders, info->number_of_coders,
-			info->number_of_compiles_required))
+	if (check_burnout(coders, info, start_time, sim) || all_coders_done(coders,
+			info->number_of_coders, info->number_of_compiles_required))
 		return (1);
 	return (0);
 }

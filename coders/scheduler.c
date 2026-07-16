@@ -57,7 +57,6 @@ void	apply_edf(t_dongle *d, t_request_node *new_node)
 void	queue_insert(t_dongle *d, t_request_node *new_node, char *scheduler)
 {
 	t_request_node	*curr;
-	// t_request_node	*prev;
 
 	new_node->next = NULL;
 	if (!d->wait_queue)

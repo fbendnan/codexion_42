@@ -33,6 +33,18 @@ static int	is_a_valid_shedular(char *s)
 	return (0);
 }
 
+void	fill_shared_info(char **argv, t_shared_info *program_info)
+{
+	program_info->number_of_coders = atoi(argv[1]);
+	program_info->time_to_burnout = atoi(argv[2]);
+	program_info->time_to_compile = atoi(argv[3]);
+	program_info->time_to_debug = atoi(argv[4]);
+	program_info->time_to_refactor = atoi(argv[5]);
+	program_info->number_of_compiles_required = atoi(argv[6]);
+	program_info->time_to_cooldown = atoi(argv[7]);
+	program_info->scheduler = malloc(strlen(argv[8]) + 1);
+}
+
 int	parsing_codexion(int argc, char **argv, t_shared_info *program_info)
 {
 	int	i;
@@ -43,16 +55,10 @@ int	parsing_codexion(int argc, char **argv, t_shared_info *program_info)
 	while (++i < 8)
 		if (!is_a_valid_number(argv[i]))
 			return (0);
-	program_info->number_of_coders = atoi(argv[1]);
-	program_info->time_to_burnout = atoi(argv[2]);
-	program_info->time_to_compile = atoi(argv[3]);
-	program_info->time_to_debug = atoi(argv[4]);
-	program_info->time_to_refactor = atoi(argv[5]);
-	program_info->number_of_compiles_required = atoi(argv[6]);
-	program_info->time_to_cooldown = atoi(argv[7]);
-	program_info->scheduler = malloc(strlen(argv[8]) + 1);
+	fill_shared_info(argv, program_info);
 	if (program_info->number_of_coders < 2)
-		return (free(program_info->scheduler), display_error("Number of coders must be more than 1\n"), 0);
+		return (free(program_info->scheduler),
+			display_error("Number of coders must be more than 1\n"), 0);
 	if (!program_info->scheduler)
 		return (0);
 	strcpy(program_info->scheduler, argv[8]);
