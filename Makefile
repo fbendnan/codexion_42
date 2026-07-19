@@ -2,7 +2,7 @@ NAME        = codexion
 CC          = cc
 CFLAGS      = -Wall -Wextra -Werror -pthread -fsanitize=address -g
 SRCS     = coders/parsing.c coders/utils.c coders/dongle.c coders/codexion.c coders/coder.c coders/scheduler.c \
-			coders/monitor.c coders/init.c coders/main.c
+			coders/monitor.c coders/init.c coders/main.c coders/cleanup.c
 OBJS     = $(SRCS:.c=.o)
 
 all: $(NAME)

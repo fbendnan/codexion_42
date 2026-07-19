@@ -32,8 +32,11 @@ void	compile_and_relase_dongles(
 	if (!(coder->sim->running))
 		return ;
 	pthread_mutex_lock(&coder->infos->print_mutex);
-	if (!(coder->sim->running))
+	if (!coder->sim->running)
+	{
+		pthread_mutex_unlock(&coder->infos->print_mutex);
 		return ;
+	}
 	printf("%li %i is compiling\n",
 		get_time_in_ms() - coder->infos->start_time, coder->id);
 	pthread_mutex_unlock(&coder->infos->print_mutex);
@@ -48,8 +51,11 @@ void	debug_and_refactor(t_coder *coder)
 	if (!(coder->sim->running))
 		return ;
 	pthread_mutex_lock(&coder->infos->print_mutex);
-	if (!(coder->sim->running))
+	if (!coder->sim->running)
+	{
+		pthread_mutex_unlock(&coder->infos->print_mutex);
 		return ;
+	}
 	printf("%li %i is debugging\n",
 		get_time_in_ms() - coder->infos->start_time, coder->id);
 	pthread_mutex_unlock(&coder->infos->print_mutex);
@@ -57,8 +63,11 @@ void	debug_and_refactor(t_coder *coder)
 	if (!(coder->sim->running))
 		return ;
 	pthread_mutex_lock(&coder->infos->print_mutex);
-	if (!(coder->sim->running))
+	if (!coder->sim->running)
+	{
+		pthread_mutex_unlock(&coder->infos->print_mutex);
 		return ;
+	}
 	printf("%li %i is refactoring\n",
 		get_time_in_ms() - coder->infos->start_time, coder->id);
 	pthread_mutex_unlock(&coder->infos->print_mutex);

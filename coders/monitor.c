@@ -80,7 +80,7 @@ void	*monitor_routine(void *arg)
 		{
 			sim->running = 0;
 			pthread_mutex_unlock(&sim->mutex);
-			exit(0);
+			return (NULL);
 		}
 		pthread_mutex_unlock(&sim->mutex);
 		usleep(500);

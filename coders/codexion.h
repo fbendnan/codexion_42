@@ -94,6 +94,8 @@ void			init_simulation(t_simulation *sim);
 long			get_request_priority(t_coder *coder);
 void			queue_insert(t_dongle *d, t_request_node *new_node,
 					char *scheduler);
+void			cleanup(t_dongle *dongles, t_coder *coders,
+					t_shared_info *info, t_simulation *sim);
 t_request_node	*queue_pop(t_dongle *d);
 long			get_time_in_ms(void);
 void			display_error(char *error_msg);
