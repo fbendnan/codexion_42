@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbendnane <fbendnane@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 13:29:52 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/06/17 12:22:54 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/07/19 23:50:29 by fbendnane        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,45 +29,45 @@ void	decide_order(t_coder *coder, t_dongle **first, t_dongle **second)
 void	compile_and_relase_dongles(
 	t_coder *coder, t_dongle *first, t_dongle *second)
 {
-	if (!(coder->sim->running))
+	int	running;
+	
+	pthread_mutex_lock(&coder->sim->mutex);
+	running = coder->sim->running;
+	pthread_mutex_unlock(&coder->sim->mutex);
+	if (!running)
 		return ;
 	pthread_mutex_lock(&coder->infos->print_mutex);
-	if (!coder->sim->running)
-	{
-		pthread_mutex_unlock(&coder->infos->print_mutex);
-		return ;
-	}
 	printf("%li %i is compiling\n",
 		get_time_in_ms() - coder->infos->start_time, coder->id);
 	pthread_mutex_unlock(&coder->infos->print_mutex);
 	precise_usleep(coder->infos->time_to_compile, coder->sim);
+	pthread_mutex_lock(&coder->sim->mutex);
 	coder->compiles_done++;
+	pthread_mutex_unlock(&coder->sim->mutex);
 	dongle_release(first, coder->infos);
 	dongle_release(second, coder->infos);
 }
 
 void	debug_and_refactor(t_coder *coder)
 {
-	if (!(coder->sim->running))
+	int running;
+	
+	pthread_mutex_lock(&coder->sim->mutex);
+	running = coder->sim->running;
+	pthread_mutex_unlock(&coder->sim->mutex);
+	if (!running)
 		return ;
 	pthread_mutex_lock(&coder->infos->print_mutex);
-	if (!coder->sim->running)
-	{
-		pthread_mutex_unlock(&coder->infos->print_mutex);
-		return ;
-	}
 	printf("%li %i is debugging\n",
 		get_time_in_ms() - coder->infos->start_time, coder->id);
 	pthread_mutex_unlock(&coder->infos->print_mutex);
 	precise_usleep(coder->infos->time_to_debug, coder->sim);
-	if (!(coder->sim->running))
+	pthread_mutex_lock(&coder->sim->mutex);
+	running = coder->sim->running;
+	pthread_mutex_unlock(&coder->sim->mutex);
+	if (!running)
 		return ;
 	pthread_mutex_lock(&coder->infos->print_mutex);
-	if (!coder->sim->running)
-	{
-		pthread_mutex_unlock(&coder->infos->print_mutex);
-		return ;
-	}
 	printf("%li %i is refactoring\n",
 		get_time_in_ms() - coder->infos->start_time, coder->id);
 	pthread_mutex_unlock(&coder->infos->print_mutex);
@@ -84,10 +84,13 @@ void	*start_simulation(void *argv)
 	decide_order(coder, &first, &second);
 	while (1)
 	{
-		if (coder->compiles_done >= coder->infos->number_of_compiles_required)
+		pthread_mutex_lock(&coder->sim->mutex);
+		if (!coder->sim->running || coder->compiles_done >= coder->infos->number_of_compiles_required)
+		{
+			pthread_mutex_unlock(&coder->sim->mutex);
 			break ;
-		if (!(coder->sim->running))
-			break ;
+		}
+		pthread_mutex_unlock(&coder->sim->mutex);
 		if (!dongle_take(first, coder))
 			break ;
 		if (!dongle_take(second, coder))

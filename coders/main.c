@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbendnan <fbendnan@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbendnane <fbendnane@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/24 12:27:22 by fbendnan          #+#    #+#             */
-/*   Updated: 2026/06/17 12:11:48 by fbendnan         ###   ########.fr       */
+/*   Updated: 2026/07/19 22:20:11 by fbendnane        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	main_process(t_shared_info *info, t_dongle *dongles, t_coder *coders)
 	coders = malloc(sizeof(t_coder) * info->number_of_coders);
 	if (!coders)
 		return (display_error("Error: malloc failed\n"), free(dongles), 0);
-	initialize_coders(info, dongles, coders, &sim);
 	info->start_time = get_time_in_ms();
+	initialize_coders(info, dongles, coders, &sim);
 	create_coders(coders);
 	monitor.coders = coders;
 	monitor.info = info;
