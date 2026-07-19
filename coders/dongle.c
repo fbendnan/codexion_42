@@ -70,6 +70,8 @@ int	dongle_take(t_dongle *d, t_coder *coder)
 		d->in_use = 1;
 		pthread_mutex_unlock(&d->mutex);
 		pthread_mutex_lock(&coder->infos->print_mutex);
+		if (!coder->sim->running)
+			return (0);
 		printf("%ld %d has taken a dongle\n",
 			get_time_in_ms() - coder->infos->start_time, coder->id);
 		pthread_mutex_unlock(&coder->infos->print_mutex);

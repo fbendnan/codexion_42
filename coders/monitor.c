@@ -40,9 +40,9 @@ static int	check_burnout(
 			&& now - cdr[i].last_time_compilation >= info->time_to_burnout
 			&& cdr[i].compiles_done < cdr[i].infos->number_of_compiles_required)
 		{
+			sim->running = 0;
 			pthread_mutex_lock(&cdr[i].infos->print_mutex);
 			printf("%ld %d burned out\n", get_time_in_ms() - start, cdr[i].id);
-			sim->running = 0;
 			pthread_mutex_unlock(&cdr[i].infos->print_mutex);
 			return (1);
 		}

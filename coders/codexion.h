@@ -96,8 +96,6 @@ void			queue_insert(t_dongle *d, t_request_node *new_node,
 					char *scheduler);
 t_request_node	*queue_pop(t_dongle *d);
 long			get_time_in_ms(void);
-void			cleanup(t_dongle *dongles, t_coder *coders,
-					t_shared_info *info, t_simulation *sim);
 void			display_error(char *error_msg);
 int				is_a_valid_number(char *a);
 int				is_letter(char a);

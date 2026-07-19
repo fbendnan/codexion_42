@@ -37,7 +37,6 @@ int	main_process(t_shared_info *info, t_dongle *dongles, t_coder *coders)
 	pthread_create(&monitor_thread, NULL, monitor_routine, &monitor);
 	wait_coders_creation(coders);
 	pthread_join(monitor_thread, NULL);
-	cleanup(dongles, coders, info, &sim);
 	return (1);
 }
 
