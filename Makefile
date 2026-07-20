@@ -1,6 +1,6 @@
 NAME        = codexion
 CC          = gcc
-CFLAGS      = -Wall -Wextra -Werror -pthread  -g
+CFLAGS      = -Wall -Wextra -Werror -pthread
 SRCS     = coders/parsing.c coders/utils.c coders/dongle.c coders/codexion.c coders/coder.c coders/scheduler.c \
 			coders/monitor.c coders/init.c coders/main.c coders/cleanup.c
 OBJS     = $(SRCS:.c=.o)

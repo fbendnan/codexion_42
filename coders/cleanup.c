@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// gcc -Wall -Wextra -Werror -pthread *.c -o codexion
 // ./codexion 2 2000 100 100 100 2 50 fifo
 
 #include "codexion.h"
@@ -39,10 +38,8 @@ void	cleanup(t_dongle *dongles, t_coder *coders,
 		i++;
 	}
 	pthread_mutex_destroy(&sim->mutex);
-	// pthread_mutex_destroy(&sim->print_mutex);
-	
+	pthread_mutex_destroy(&sim->print_mutex);
 	free(info->scheduler);
 	free(dongles);
 	free(coders);
-
 }

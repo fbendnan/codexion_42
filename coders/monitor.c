@@ -51,7 +51,6 @@ static int	check_burnout(t_monitor *monitor, t_simulation *sim)
 		{
 			pthread_mutex_unlock(&sim->mutex);
 			print_info(coder, "burned out");
-			// printf("comp = %li, right = %i, left = %i\n",coder[i].compiles_done, coder[i].right_dongle->id, coder[i].left_dongle->id);
 			return (1);
 		}
 		pthread_mutex_unlock(&sim->mutex);

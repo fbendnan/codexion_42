@@ -104,6 +104,7 @@ int				is_letter(char a);
 int				is_sim_running(t_coder *coder);
 void			wait_coders_creation(t_coder *coders);
 void			precise_usleep(long time_in_ms, t_simulation *sim);
-void print_info(t_coder *coder, char *msg);
+void			print_info(t_coder *coder, char *msg);
+void			one_coder(t_coder *coder);
 
 #endif

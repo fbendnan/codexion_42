@@ -12,16 +12,6 @@
 
 #include "codexion.h"
 
-int	is_sim_running(t_coder *coder)
-{
-	int	r;
-
-	pthread_mutex_lock(&coder->sim->mutex);
-	r = coder->sim->running;
-	pthread_mutex_unlock(&coder->sim->mutex);
-	return (r);
-}
-
 static int	waiting_room(t_dongle *d, t_coder *coder)
 {
 	t_request_node	*req;
@@ -62,18 +52,15 @@ void	waiting_cooldown(t_dongle *d, t_coder *coder)
 	print_info(coder, "has taken a dongle");
 }
 
-void print_info(t_coder *coder, char *msg)
+void	print_info(t_coder *coder, char *msg)
 {
-	
 	pthread_mutex_lock(&coder->sim->print_mutex);
-	if(is_sim_running(coder))
+	if (is_sim_running(coder))
 	{
 		printf("%ld %d %s\n",
 			get_time_in_ms() - coder->infos->start_time, coder->id, msg);
 	}
-
 	pthread_mutex_unlock(&coder->sim->print_mutex);
-	
 }
 
 int	dongle_take(t_dongle *d, t_coder *coder)
@@ -84,7 +71,6 @@ int	dongle_take(t_dongle *d, t_coder *coder)
 	now = get_time_in_ms();
 	if (!d->in_use && now >= d->cooldown_until && !d->wait_queue)
 	{
-		
 		if (!is_sim_running(coder))
 		{
 			pthread_mutex_unlock(&d->mutex);

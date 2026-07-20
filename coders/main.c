@@ -12,6 +12,22 @@
 
 #include "codexion.h"
 
+int	is_sim_running(t_coder *coder)
+{
+	int	r;
+
+	pthread_mutex_lock(&coder->sim->mutex);
+	r = coder->sim->running;
+	pthread_mutex_unlock(&coder->sim->mutex);
+	return (r);
+}
+
+void	one_coder(t_coder *coder)
+{
+	print_info(coder, "has taken a dongle");
+	precise_usleep(coder->infos->time_to_burnout, coder->sim);
+}
+
 int	main_process(t_shared_info *info, t_dongle *dongles, t_coder *coders)
 {
 	t_simulation	sim;
