@@ -50,13 +50,13 @@ typedef struct s_shared_info
 	int				time_to_cooldown;
 	char			*scheduler;
 	long			start_time;
-	pthread_mutex_t	print_mutex;
 }	t_shared_info;
 
 typedef struct s_simulation
 {
 	int				running;
 	pthread_mutex_t	mutex;
+	pthread_mutex_t	print_mutex;
 }	t_simulation;
 
 typedef struct s_coder
@@ -101,7 +101,9 @@ long			get_time_in_ms(void);
 void			display_error(char *error_msg);
 int				is_a_valid_number(char *a);
 int				is_letter(char a);
+int				is_sim_running(t_coder *coder);
 void			wait_coders_creation(t_coder *coders);
 void			precise_usleep(long time_in_ms, t_simulation *sim);
+void print_info(t_coder *coder, char *msg);
 
 #endif

@@ -51,7 +51,6 @@ int	main(int argc, char **argv)
 	coders = NULL;
 	if (!parsing_codexion(argc, argv, &info))
 		return (1);
-	pthread_mutex_init(&info.print_mutex, NULL);
 	if (!main_process(&info, dongles, coders))
 		return (1);
 	return (0);

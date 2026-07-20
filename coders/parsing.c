@@ -56,7 +56,7 @@ int	parsing_codexion(int argc, char **argv, t_shared_info *program_info)
 		if (!is_a_valid_number(argv[i]))
 			return (0);
 	fill_shared_info(argv, program_info);
-	if (program_info->number_of_coders < 2)
+	if (program_info->number_of_coders < 1)
 		return (free(program_info->scheduler),
 			display_error("Number of coders must be more than 1\n"), 0);
 	if (!program_info->scheduler)

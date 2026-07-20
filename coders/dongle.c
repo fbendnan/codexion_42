@@ -12,7 +12,7 @@
 
 #include "codexion.h"
 
-static int	is_sim_running(t_coder *coder)
+int	is_sim_running(t_coder *coder)
 {
 	int	r;
 
@@ -45,56 +45,63 @@ static int	waiting_room(t_dongle *d, t_coder *coder)
 	return (1);
 }
 
-static int	take_dongle_and_log(t_dongle *d, t_coder *coder)
+void	waiting_cooldown(t_dongle *d, t_coder *coder)
 {
+	long	now;
+
+	now = get_time_in_ms();
+	while (now < d->cooldown_until)
+	{
+		pthread_mutex_unlock(&d->mutex);
+		usleep(100);
+		pthread_mutex_lock(&d->mutex);
+		now = get_time_in_ms();
+	}
 	d->in_use = 1;
 	pthread_mutex_unlock(&d->mutex);
+	print_info(coder, "has taken a dongle");
+}
 
-	if (!is_sim_running(coder))
+void print_info(t_coder *coder, char *msg)
+{
+	
+	pthread_mutex_lock(&coder->sim->print_mutex);
+	if(is_sim_running(coder))
 	{
-		pthread_mutex_lock(&d->mutex);
-		d->in_use = 0;
-		pthread_mutex_unlock(&d->mutex);
-		return (0);
+		printf("%ld %d %s\n",
+			get_time_in_ms() - coder->infos->start_time, coder->id, msg);
 	}
 
-	pthread_mutex_lock(&coder->infos->print_mutex);
-	printf("%ld %d has taken a dongle\n",
-		get_time_in_ms() - coder->infos->start_time, coder->id);
-	pthread_mutex_unlock(&coder->infos->print_mutex);
-	return (1);
+	pthread_mutex_unlock(&coder->sim->print_mutex);
+	
 }
 
 int	dongle_take(t_dongle *d, t_coder *coder)
 {
 	long	now;
 
-	if (!is_sim_running(coder))
-		return (0);
-
 	pthread_mutex_lock(&d->mutex);
 	now = get_time_in_ms();
-
 	if (!d->in_use && now >= d->cooldown_until && !d->wait_queue)
-		return (take_dongle_and_log(d, coder));
-
-	if (!d->in_use && now < d->cooldown_until && !d->wait_queue)
 	{
-		while (now < d->cooldown_until)
+		
+		if (!is_sim_running(coder))
 		{
 			pthread_mutex_unlock(&d->mutex);
-			usleep(100);
-			pthread_mutex_lock(&d->mutex);
-			now = get_time_in_ms();
+			return (0);
 		}
-		return (take_dongle_and_log(d, coder));
+		d->in_use = 1;
+		pthread_mutex_unlock(&d->mutex);
+		print_info(coder, "has taken a dongle");
+		return (1);
 	}
-
+	if (!d->in_use && now < d->cooldown_until && !d->wait_queue)
+		return (waiting_cooldown(d, coder), 1);
 	if (!waiting_room(d, coder))
 		return (0);
-
 	pthread_mutex_lock(&d->mutex);
-	return (take_dongle_and_log(d, coder));
+	waiting_cooldown(d, coder);
+	return (1);
 }
 
 void	dongle_release(t_dongle *d, t_shared_info *info)
@@ -109,7 +116,6 @@ void	dongle_release(t_dongle *d, t_shared_info *info)
 	else
 		d->in_use = 0;
 	pthread_mutex_unlock(&d->mutex);
-
 	if (next)
 	{
 		pthread_mutex_lock(next->personal_mutex);

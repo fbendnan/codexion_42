@@ -38,9 +38,11 @@ void	cleanup(t_dongle *dongles, t_coder *coders,
 		}
 		i++;
 	}
-	pthread_mutex_destroy(&info->print_mutex);
 	pthread_mutex_destroy(&sim->mutex);
+	// pthread_mutex_destroy(&sim->print_mutex);
+	
 	free(info->scheduler);
 	free(dongles);
 	free(coders);
+
 }

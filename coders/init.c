@@ -53,5 +53,6 @@ void	initialize_coders(t_shared_info *infos, t_dongle *dongles,
 void	init_simulation(t_simulation *sim)
 {
 	sim->running = 1;
+	pthread_mutex_init(&sim->print_mutex, NULL);
 	pthread_mutex_init(&sim->mutex, NULL);
 }
